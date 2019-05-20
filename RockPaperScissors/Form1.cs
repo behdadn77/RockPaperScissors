@@ -125,14 +125,14 @@ namespace RockPaperScissors
                     labelStatus.Text = "! OPPONENT WON !";
                 }
                 buttonAgain.Visible = true;
+                yourSelection = null;
+                opponentSelection = null;
             }
         }
 
         private void ButtonAgain_Click(object sender, EventArgs e)
         {
             panelRPS.Enabled = true;
-            yourSelection = null;
-            opponentSelection = null;
             pictureBoxOpponent.Image = null;
             pictureBoxYou.Image = null;
             labelStatus.Text = "";
