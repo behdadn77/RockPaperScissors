@@ -16,55 +16,78 @@ namespace RockPaperScissors
 {
     public partial class Form1 : Form
     {
-        Socket socketClient;
         public Form1()
         {
             InitializeComponent();
         }
+        enum RPS { rock, paper, scissors };
+        Dictionary<RPS, Bitmap> rpsPicture = new Dictionary<RPS, Bitmap>()
+        {
+            {RPS.rock,new Bitmap(Properties.Resources.rock)},
+            {RPS.paper,new Bitmap(Properties.Resources.paper)},
+            {RPS.scissors,new Bitmap(Properties.Resources.scissors)},
+        };
+        Socket socketClient;
+        Socket socketServer;
+        Thread thread;
         private void ButtonConnect_Click(object sender, EventArgs e)
         {
+            buttonConnect.Text = "Waiting for connection...";
+            buttonConnect.Enabled = false;
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(textboxIP.Text), int.Parse(textboxPort.Text));
-            if (radioHost.Checked)
+            try
             {
-                Socket socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socketServer.Bind(iPEndPoint);
-                socketServer.Listen(1);
-                socketClient = socketServer.Accept();
+                if (radioHost.Checked)
+                {
+                    socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    socketServer.Bind(iPEndPoint);
+                    socketServer.Listen(1);
+                    socketClient = socketServer.Accept();
+                }
+                if (radioClient.Checked)
+                {
+                    socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    socketClient.Connect(iPEndPoint);
+                }
+                buttonConnect.Text = "Connected";
+                panelGame.Enabled = true;
+
             }
-            if (radioClient.Checked)
+            catch (Exception)
             {
-                socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socketClient.Connect(iPEndPoint);
+                MessageBox.Show("Connection Failed!");
+                buttonConnect.Text = "Connect";
+                buttonConnect.Enabled = true;
             }
-            Thread thread = new Thread(new ThreadStart(GetOppnentResult));
+
+            thread = new Thread(new ThreadStart(GetOppnentResult));
             thread.Start();
         }
 
 
-        RPS? yourSelection=null;
-        RPS? opponentSelection=null;
+        RPS? yourSelection = null;
+        RPS? opponentSelection = null;
         private void GetOppnentResult()
         {
             try
             {
-                byte[] b = new byte[1];
+                byte[] b = new byte[4];
                 while (true)
                 {
-                    int r = socketClient.Receive(b);
-                    if (r > 0)
+                    if (socketClient.Receive(b) > 0)
                     {
                         this.Invoke(new Action(() =>
                         {
-                            opponentSelection = (RPS)b[0];
+                            opponentSelection = (RPS)(BitConverter.ToInt32(b,0));
                             Result();
                         }));
-                        Thread.CurrentThread.Abort();
+                        //Thread.CurrentThread.Abort();
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                // MessageBox.Show(ex.Message);
             }
         }
 
@@ -73,31 +96,77 @@ namespace RockPaperScissors
             yourSelection = option;
             pictureBoxYou.Image = rpsPicture[option];
             panelRPS.Enabled = false;
-            socketClient.Send(new byte[1] { Convert.ToByte(option) });
-            Result();
+            if (socketClient != null)
+            {
+                socketClient.Send(BitConverter.GetBytes((int)option));
+                Result();
+            }
+            else
+            {
+                MessageBox.Show("Connection Failed!");
+            }
         }
 
         private void Result()
         {
-            if (yourSelection!=null&&opponentSelection!=null)
+            if (yourSelection != null && opponentSelection != null)
             {
-                MessageBox.Show(opponentSelection.ToString());
+                pictureBoxOpponent.Image = rpsPicture[(RPS)opponentSelection];
+                if (yourSelection == opponentSelection)
+                {
+                    labelStatus.Text = "! TIE !";
+                }
+                else if (yourSelection > opponentSelection || (yourSelection == RPS.rock && opponentSelection == RPS.scissors))
+                {
+                    labelStatus.Text = "! YOU WON !";
+                }
+                else
+                {
+                    labelStatus.Text = "! OPPONENT WON !";
+                }
+                buttonAgain.Visible = true;
             }
         }
 
-        enum RPS { rock, paper, scissors };
-        Dictionary<RPS, Bitmap> rpsPicture = new Dictionary<RPS, Bitmap>()
+        private void ButtonAgain_Click(object sender, EventArgs e)
         {
-            {RPS.rock,new Bitmap(Properties.Resources.rock)},
-            {RPS.paper,new Bitmap(Properties.Resources.paper)},
-            {RPS.scissors,new Bitmap(Properties.Resources.scissors)},
-        };
+            panelRPS.Enabled = true;
+            yourSelection = null;
+            opponentSelection = null;
+            pictureBoxOpponent.Image = null;
+            pictureBoxYou.Image = null;
+            labelStatus.Text = "";
+            buttonAgain.Visible = false;
+        }
 
         private void ButtonRock_Click(object sender, EventArgs e) => UserSelected(RPS.rock);
 
         private void ButtonPaper_Click(object sender, EventArgs e) => UserSelected(RPS.paper);
 
         private void ButtonScissors_Click(object sender, EventArgs e) => UserSelected(RPS.scissors);
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (thread != null)
+            {
+                thread.Abort();
+            }
+            try
+            {
+                if (socketClient!=null)
+                {
+                    socketClient.Shutdown(SocketShutdown.Both);
+                }
+                if (socketServer!=null)
+                {
+                    socketServer.Shutdown(SocketShutdown.Both);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
 
     }
 }

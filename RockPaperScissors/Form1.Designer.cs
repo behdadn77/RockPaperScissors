@@ -35,18 +35,21 @@
             this.textboxPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.pictureBoxYou = new System.Windows.Forms.PictureBox();
-            this.pictureBoxOpponent = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.labelStatus = new System.Windows.Forms.Label();
+            this.panelGame = new System.Windows.Forms.Panel();
+            this.panelRPS = new System.Windows.Forms.Panel();
             this.buttonScissors = new System.Windows.Forms.Button();
             this.buttonPaper = new System.Windows.Forms.Button();
             this.buttonRock = new System.Windows.Forms.Button();
-            this.panelRPS = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxYou)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOpponent)).BeginInit();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pictureBoxOpponent = new System.Windows.Forms.PictureBox();
+            this.pictureBoxYou = new System.Windows.Forms.PictureBox();
+            this.buttonAgain = new System.Windows.Forms.Button();
+            this.panelGame.SuspendLayout();
             this.panelRPS.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOpponent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxYou)).BeginInit();
             this.SuspendLayout();
             // 
             // radioHost
@@ -117,53 +120,33 @@
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.ButtonConnect_Click);
             // 
-            // pictureBoxYou
+            // panelGame
             // 
-            this.pictureBoxYou.Location = new System.Drawing.Point(5, 186);
-            this.pictureBoxYou.Name = "pictureBoxYou";
-            this.pictureBoxYou.Size = new System.Drawing.Size(235, 144);
-            this.pictureBoxYou.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxYou.TabIndex = 7;
-            this.pictureBoxYou.TabStop = false;
+            this.panelGame.Controls.Add(this.panelRPS);
+            this.panelGame.Controls.Add(this.labelStatus);
+            this.panelGame.Controls.Add(this.label4);
+            this.panelGame.Controls.Add(this.label3);
+            this.panelGame.Controls.Add(this.pictureBoxOpponent);
+            this.panelGame.Controls.Add(this.pictureBoxYou);
+            this.panelGame.Enabled = false;
+            this.panelGame.Location = new System.Drawing.Point(5, 83);
+            this.panelGame.Name = "panelGame";
+            this.panelGame.Size = new System.Drawing.Size(500, 381);
+            this.panelGame.TabIndex = 7;
             // 
-            // pictureBoxOpponent
+            // panelRPS
             // 
-            this.pictureBoxOpponent.Location = new System.Drawing.Point(267, 186);
-            this.pictureBoxOpponent.Name = "pictureBoxOpponent";
-            this.pictureBoxOpponent.Size = new System.Drawing.Size(235, 144);
-            this.pictureBoxOpponent.TabIndex = 8;
-            this.pictureBoxOpponent.TabStop = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(96, 343);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 20);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "You";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(341, 343);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 20);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Opponent";
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.labelStatus.Location = new System.Drawing.Point(5, 80);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(497, 93);
-            this.labelStatus.TabIndex = 12;
-            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panelRPS.Controls.Add(this.buttonScissors);
+            this.panelRPS.Controls.Add(this.buttonPaper);
+            this.panelRPS.Controls.Add(this.buttonRock);
+            this.panelRPS.Location = new System.Drawing.Point(0, 297);
+            this.panelRPS.Name = "panelRPS";
+            this.panelRPS.Size = new System.Drawing.Size(500, 85);
+            this.panelRPS.TabIndex = 22;
             // 
             // buttonScissors
             // 
-            this.buttonScissors.Location = new System.Drawing.Point(335, 8);
+            this.buttonScissors.Location = new System.Drawing.Point(348, 8);
             this.buttonScissors.Name = "buttonScissors";
             this.buttonScissors.Size = new System.Drawing.Size(144, 68);
             this.buttonScissors.TabIndex = 15;
@@ -173,7 +156,7 @@
             // 
             // buttonPaper
             // 
-            this.buttonPaper.Location = new System.Drawing.Point(171, 8);
+            this.buttonPaper.Location = new System.Drawing.Point(180, 8);
             this.buttonPaper.Name = "buttonPaper";
             this.buttonPaper.Size = new System.Drawing.Size(144, 68);
             this.buttonPaper.TabIndex = 14;
@@ -191,27 +174,69 @@
             this.buttonRock.UseVisualStyleBackColor = true;
             this.buttonRock.Click += new System.EventHandler(this.ButtonRock_Click);
             // 
-            // panelRPS
+            // labelStatus
             // 
-            this.panelRPS.Controls.Add(this.buttonScissors);
-            this.panelRPS.Controls.Add(this.buttonPaper);
-            this.panelRPS.Controls.Add(this.buttonRock);
-            this.panelRPS.Location = new System.Drawing.Point(5, 378);
-            this.panelRPS.Name = "panelRPS";
-            this.panelRPS.Size = new System.Drawing.Size(500, 85);
-            this.panelRPS.TabIndex = 16;
+            this.labelStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.labelStatus.Location = new System.Drawing.Point(0, -1);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(497, 93);
+            this.labelStatus.TabIndex = 21;
+            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(336, 262);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 20);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Opponent";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(91, 262);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 20);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "You";
+            // 
+            // pictureBoxOpponent
+            // 
+            this.pictureBoxOpponent.Location = new System.Drawing.Point(262, 105);
+            this.pictureBoxOpponent.Name = "pictureBoxOpponent";
+            this.pictureBoxOpponent.Size = new System.Drawing.Size(235, 144);
+            this.pictureBoxOpponent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxOpponent.TabIndex = 18;
+            this.pictureBoxOpponent.TabStop = false;
+            // 
+            // pictureBoxYou
+            // 
+            this.pictureBoxYou.Location = new System.Drawing.Point(0, 105);
+            this.pictureBoxYou.Name = "pictureBoxYou";
+            this.pictureBoxYou.Size = new System.Drawing.Size(235, 144);
+            this.pictureBoxYou.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxYou.TabIndex = 17;
+            this.pictureBoxYou.TabStop = false;
+            // 
+            // buttonAgain
+            // 
+            this.buttonAgain.Location = new System.Drawing.Point(13, 471);
+            this.buttonAgain.Name = "buttonAgain";
+            this.buttonAgain.Size = new System.Drawing.Size(484, 29);
+            this.buttonAgain.TabIndex = 8;
+            this.buttonAgain.Text = "Play again!";
+            this.buttonAgain.UseVisualStyleBackColor = true;
+            this.buttonAgain.Visible = false;
+            this.buttonAgain.Click += new System.EventHandler(this.ButtonAgain_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 466);
-            this.Controls.Add(this.panelRPS);
-            this.Controls.Add(this.labelStatus);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.pictureBoxOpponent);
-            this.Controls.Add(this.pictureBoxYou);
+            this.ClientSize = new System.Drawing.Size(509, 512);
+            this.Controls.Add(this.buttonAgain);
+            this.Controls.Add(this.panelGame);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.textboxPort);
             this.Controls.Add(this.label2);
@@ -226,9 +251,12 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxYou)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOpponent)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.panelGame.ResumeLayout(false);
+            this.panelGame.PerformLayout();
             this.panelRPS.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOpponent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxYou)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,15 +271,17 @@
         private System.Windows.Forms.TextBox textboxPort;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonConnect;
-        private System.Windows.Forms.PictureBox pictureBoxYou;
-        private System.Windows.Forms.PictureBox pictureBoxOpponent;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Panel panelGame;
+        private System.Windows.Forms.Panel panelRPS;
         private System.Windows.Forms.Button buttonScissors;
         private System.Windows.Forms.Button buttonPaper;
         private System.Windows.Forms.Button buttonRock;
-        private System.Windows.Forms.Panel panelRPS;
+        private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBoxOpponent;
+        private System.Windows.Forms.PictureBox pictureBoxYou;
+        private System.Windows.Forms.Button buttonAgain;
     }
 }
 
