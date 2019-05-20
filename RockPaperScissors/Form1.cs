@@ -41,11 +41,13 @@ namespace RockPaperScissors
         }
 
 
-        public void GetOppnentResult()
+        RPS? yourSelection=null;
+        RPS? opponentSelection=null;
+        private void GetOppnentResult()
         {
             try
             {
-                byte[] b = new byte[1024];
+                byte[] b = new byte[1];
                 while (true)
                 {
                     int r = socketClient.Receive(b);
@@ -53,13 +55,8 @@ namespace RockPaperScissors
                     {
                         this.Invoke(new Action(() =>
                         {
-                            SaveFileDialog s = new SaveFileDialog();
-                            if (s.ShowDialog() == DialogResult.OK)
-                            {
-                                FileStream fs = new FileStream(s.FileName, FileMode.Create);
-                                fs.Write(b, 0, r);
-                                fs.Flush();
-                            }
+                            opponentSelection = (RPS)b[0];
+                            Result();
                         }));
                         Thread.CurrentThread.Abort();
                     }
@@ -71,6 +68,23 @@ namespace RockPaperScissors
             }
         }
 
+        private void UserSelected(RPS option)
+        {
+            yourSelection = option;
+            pictureBoxYou.Image = rpsPicture[option];
+            panelRPS.Enabled = false;
+            socketClient.Send(new byte[1] { Convert.ToByte(option) });
+            Result();
+        }
+
+        private void Result()
+        {
+            if (yourSelection!=null&&opponentSelection!=null)
+            {
+                MessageBox.Show(opponentSelection.ToString());
+            }
+        }
+
         enum RPS { rock, paper, scissors };
         Dictionary<RPS, Bitmap> rpsPicture = new Dictionary<RPS, Bitmap>()
         {
@@ -78,19 +92,6 @@ namespace RockPaperScissors
             {RPS.paper,new Bitmap(Properties.Resources.paper)},
             {RPS.scissors,new Bitmap(Properties.Resources.scissors)},
         };
-
-        RPS userSelection;
-        private void UserSelected(RPS option)
-        {
-            userSelection = option;
-            pictureBoxYou.Image = rpsPicture[option];
-            panelRPS.Enabled = false;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void ButtonRock_Click(object sender, EventArgs e) => UserSelected(RPS.rock);
 
