@@ -116,13 +116,13 @@ namespace RockPaperScissors
                 {
                     labelStatus.Text = "! TIE !";
                 }
-                else if (yourSelection > opponentSelection || (yourSelection == RPS.rock && opponentSelection == RPS.scissors))
+                else if (yourSelection == opponentSelection+1 || (yourSelection == RPS.rock && opponentSelection == RPS.scissors))
                 {
                     labelStatus.Text = "! YOU WON !";
                 }
                 else
                 {
-                    labelStatus.Text = "! OPPONENT WON !";
+                    labelStatus.Text = "! YOU LOST !";
                 }
                 buttonAgain.Visible = true;
                 yourSelection = null;
